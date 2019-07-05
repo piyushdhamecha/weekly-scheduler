@@ -65,8 +65,8 @@ const WeeklyScheduler = ({
           <WeeklySchedulerProgress
             total={301}
             used={100}
-            left={151}
-            top={15}
+            left={101}
+            top={10}
             text='AM Session'
           />
         </StyledRowContent>

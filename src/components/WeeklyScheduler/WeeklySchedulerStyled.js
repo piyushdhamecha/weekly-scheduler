@@ -53,7 +53,7 @@ export const StyledProgressContainer = styled.div`
   display: flex;
   position: absolute;
   width: ${({ width = 50 }) => width}px;
-  height: 30px;
+  height: 40px;
   left: ${({ left = 0 }) => left}px;
   top: ${({ top = 0 }) => top}px;
 `
@@ -62,10 +62,11 @@ export const StyledProgress = styled.div`
   display: flex;
   position: absolute;
   background: ${({ background = 'yellow' }) => background};
-  height: 30px;
+  height: 40px;
   border-radius: 20px;
   justify-content: center;
   align-items: center;
+  left: ${({ left = 0 }) => left}px;
   width: ${({ width = 50 }) => width}px;
 `
 
