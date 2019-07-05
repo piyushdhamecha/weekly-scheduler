@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-const CELL_WIDTH = 150
+const CELL_WIDTH = 100
 
 export const StyledTable = styled.div`
   display: flex;
@@ -9,7 +9,19 @@ export const StyledTable = styled.div`
 
 export const StyledColumnHeader = styled.div`
   display: flex;
-  min-height: 100px;
+  min-height: 60px;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 600;
+  width: ${CELL_WIDTH}px;
+  color: gray;
+`
+
+export const StyledRowHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 60px;
   justify-content: center;
   align-items: center;
   font-size: 20px;
@@ -17,15 +29,9 @@ export const StyledColumnHeader = styled.div`
   width: ${CELL_WIDTH}px;
 `
 
-export const StyledRowHeader = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: 70px;
-  justify-content: center;
-  align-items: center;
-  font-size: 20px;
-  font-weight: 600;
-  width: ${CELL_WIDTH}px;
+export const StyledRowSubHeader = styled.div`
+  font-size: 16px;
+  color: gray;
 `
 
 export const StyledCell = styled.div`
@@ -47,7 +53,7 @@ export const StyledProgressContainer = styled.div`
   display: flex;
   position: absolute;
   width: ${({ width = 50 }) => width}px;
-  height: 40px;
+  height: 30px;
   left: ${({ left = 0 }) => left}px;
   top: ${({ top = 0 }) => top}px;
 `
@@ -56,7 +62,7 @@ export const StyledProgress = styled.div`
   display: flex;
   position: absolute;
   background: ${({ background = 'yellow' }) => background};
-  height: 40px;
+  height: 30px;
   border-radius: 20px;
   justify-content: center;
   align-items: center;
@@ -74,7 +80,6 @@ export const StyledProgressText = styled.div`
   z-index: 3;
   justify-content: center;
   align-items: center;
-  height: 100%;
   font-weight: 600;
   color: #fff;
 `

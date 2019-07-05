@@ -8,6 +8,7 @@ import {
   StyledRow,
   StyledColumnHeader,
   StyledRowHeader,
+  StyledRowSubHeader,
   StyledCell,
   StyledRowContent,
 } from './WeeklySchedulerStyled'
@@ -55,9 +56,9 @@ const WeeklyScheduler = ({
           <StyledCell>
             <StyledRowHeader>
               {date.format('dddd').slice(0, 3).toUpperCase()}
-              <div>
+              <StyledRowSubHeader>
                 {date.format('DD/MM')}
-              </div>
+              </StyledRowSubHeader>
             </StyledRowHeader>
           </StyledCell>
           {_.map(timeRange, () => <StyledCell />)}
