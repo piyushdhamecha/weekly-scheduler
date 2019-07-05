@@ -1,4 +1,4 @@
-'use strict';
+
 
 const fs = require('fs');
 const isWsl = require('is-wsl');
@@ -343,6 +343,7 @@ module.exports = function(webpackEnv) {
                 ),
                 
                 plugins: [
+                  'lodash',
                   [
                     require.resolve('babel-plugin-named-asset-import'),
                     {

@@ -1,3 +1,6 @@
+import _ from 'lodash'
+import moment from 'moment'
+
 import React from 'react';
 
 import {
@@ -10,54 +13,54 @@ import {
 } from './WeeklySchedulerStyled'
 import WeeklySchedulerProgress from './WeeklySchedulerProgress'
 
-const WeeklyScheduler = () => {
-  return (
-    <StyledTable>
-      <StyledRow>
-        <StyledColumnHeader/>
-        <StyledColumnHeader>
-          08.00
+const WeeklyScheduler = ({
+  startTime,
+  endTime,
+  startDate,
+  endDate,
+}) => {
+
+  const startTimeWithDate = moment().set({ hour: startTime, minute: 0,second: 0 })
+  const endTimeWithDate = moment().set({ hour: endTime, minute: 0, second: 0 })
+  const timeDuration = moment.duration(endTimeWithDate.diff(startTimeWithDate))
+  const hourDifference = timeDuration.asHours()
+
+  const timeRange = []
+  for (let index = 0; index < hourDifference; index++) {
+    timeRange.push(moment(startTimeWithDate).add(index, "hour"))
+  }
+
+  const dateDiff = moment(endDate).diff(moment(startDate), 'days')
+
+  const dateRange = []
+  for (let index = 0; index < dateDiff; index++) {
+    dateRange.push(moment(startDate).add(index, "day"))
+  }
+  
+  const renderColumnHeader = () => {
+    return [
+      <StyledColumnHeader/>,
+      ..._.map(timeRange, (timeWithDate) => (
+        <StyledColumnHeader key={timeWithDate.valueOf()}>
+          {timeWithDate.format('HH:mm')}
         </StyledColumnHeader>
-        <StyledColumnHeader>
-          09.00
-        </StyledColumnHeader>
-        <StyledColumnHeader>
-          10.00
-        </StyledColumnHeader>
-        <StyledColumnHeader>
-          11.00
-        </StyledColumnHeader>
-      </StyledRow>
-      <StyledRow>
+      ))
+    ]
+  }
+
+  const renderRows = () => _.map(dateRange, (date) => {
+    return (
+      <StyledRow key={date.valueOf()}>
         <StyledRowContent>
           <StyledCell>
             <StyledRowHeader>
-              MON
+              {date.format('dddd').slice(0, 3).toUpperCase()}
               <div>
-                06/07
+                {date.format('DD/MM')}
               </div>
             </StyledRowHeader>
           </StyledCell>
-          <StyledCell />
-          <StyledCell />
-          <StyledCell />
-          <StyledCell />
-        </StyledRowContent>
-      </StyledRow>
-      <StyledRow>
-        <StyledRowContent>
-          <StyledCell>
-            <StyledRowHeader>
-              TUE
-              <div>
-                07/07
-              </div>
-            </StyledRowHeader>
-          </StyledCell>
-          <StyledCell />
-          <StyledCell />
-          <StyledCell />
-          <StyledCell />
+          {_.map(timeRange, () => <StyledCell />)}
           <WeeklySchedulerProgress
             total={301}
             used={100}
@@ -67,22 +70,15 @@ const WeeklyScheduler = () => {
           />
         </StyledRowContent>
       </StyledRow>
+    )
+  })
+    
+  return (
+    <StyledTable>
       <StyledRow>
-        <StyledRowContent>
-          <StyledCell>
-            <StyledRowHeader>
-              WED
-              <div>
-                08/07
-              </div>
-            </StyledRowHeader>
-          </StyledCell>
-          <StyledCell />
-          <StyledCell />
-          <StyledCell />
-          <StyledCell />
-        </StyledRowContent>
+        {renderColumnHeader()}
       </StyledRow>
+      {renderRows()}
     </StyledTable>
   );
 };
