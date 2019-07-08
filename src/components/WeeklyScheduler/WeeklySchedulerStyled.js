@@ -1,21 +1,26 @@
 import styled from 'styled-components'
 
-const CELL_WIDTH = 100
+import {
+  CELL_WIDTH,
+  ROW_HEADER_WIDTH,
+} from '../../constants'
 
-export const StyledTable = styled.div`
-  display: flex;
-  flex-direction: column;
-`
 
-export const StyledColumnHeader = styled.div`
+export const StyledColumnHeaderWrapper = styled.div`
   display: flex;
   min-height: 60px;
   justify-content: center;
   align-items: center;
   font-size: 18px;
   font-weight: 600;
-  width: ${CELL_WIDTH}px;
+  width: 100%;
   color: gray;
+  position: relative;
+`
+
+export const StyledColumnHeader = styled.div`
+  position: absolute;
+  ${({ left }) => left && `left: ${left}px;`};
 `
 
 export const StyledRowHeader = styled.div`
@@ -26,7 +31,7 @@ export const StyledRowHeader = styled.div`
   align-items: center;
   font-size: 20px;
   font-weight: 600;
-  width: ${CELL_WIDTH}px;
+  width: ${ROW_HEADER_WIDTH}px;
 `
 
 export const StyledRowSubHeader = styled.div`
@@ -36,16 +41,21 @@ export const StyledRowSubHeader = styled.div`
 
 export const StyledCell = styled.div`
   display: flex;
-  width: ${CELL_WIDTH}px;
+  width: ${({ width = CELL_WIDTH }) => width}px;
+  border-right: 1px dashed silver;
 `
 
 export const StyledRow = styled.div`
   display: flex;
-  border-bottom: 1px dashed silver;
+`
 
-  & ${StyledColumnHeader} ~ ${StyledColumnHeader}, 
-  ${StyledCell} ~ ${StyledCell} {
-    border-left: 1px dashed silver;
+
+export const StyledTable = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  & ${StyledRow} ~ ${StyledRow} {
+    border-bottom: 1px dashed silver;
   }
 `
 

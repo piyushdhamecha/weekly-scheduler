@@ -12,8 +12,7 @@ function App() {
       <WeeklyScheduler
         startTime={mockData.startTime}
         endTime={mockData.endTime}
-        startDate={mockData.startDate}
-        endDate={mockData.endDate}
+        dateRange={mockData.dateRange}
       />
     </StyledContainer>
   );

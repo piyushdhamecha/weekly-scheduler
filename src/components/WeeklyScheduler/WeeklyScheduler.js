@@ -6,6 +6,7 @@ import React from 'react';
 import {
   StyledTable,
   StyledRow,
+  StyledColumnHeaderWrapper,
   StyledColumnHeader,
   StyledRowHeader,
   StyledRowSubHeader,
@@ -14,46 +15,80 @@ import {
 } from './WeeklySchedulerStyled'
 import WeeklySchedulerProgress from './WeeklySchedulerProgress'
 
+import { getHourDiffBetweenTime } from '../../utils/dateUtils';
+import { CELL_WIDTH, ROW_HEADER_WIDTH, HEDER_OFFSET} from '../../constants'
+
 const WeeklyScheduler = ({
   startTime,
   endTime,
-  startDate,
-  endDate,
+  dateRange,
 }) => {
-
-  const startTimeWithDate = moment().set({ hour: startTime, minute: 0,second: 0 })
-  const endTimeWithDate = moment().set({ hour: endTime, minute: 0, second: 0 })
-  const timeDuration = moment.duration(endTimeWithDate.diff(startTimeWithDate))
-  const hourDifference = timeDuration.asHours()
-
+  const startTimeWithDate = moment().set({ hour: startTime, minute: 0, second: 0 })
+  const hourDifference = getHourDiffBetweenTime(startTime, endTime)
+  
   const timeRange = []
   for (let index = 0; index < hourDifference; index++) {
-    timeRange.push(moment(startTimeWithDate).add(index, "hour"))
+    timeRange.push(moment(startTimeWithDate).add(index + 1, "hour"))
   }
 
-  const dateDiff = moment(endDate).diff(moment(startDate), 'days')
+  const timeHeaderRange = [
+    moment(startTimeWithDate),
+    ...timeRange
+  ]
 
-  const dateRange = []
-  for (let index = 0; index < dateDiff; index++) {
-    dateRange.push(moment(startDate).add(index, "day"))
-  }
-  
+
   const renderColumnHeader = () => {
-    return [
-      <StyledColumnHeader/>,
-      ..._.map(timeRange, (timeWithDate) => (
-        <StyledColumnHeader key={timeWithDate.valueOf()}>
-          {timeWithDate.format('HH:mm')}
-        </StyledColumnHeader>
-      ))
-    ]
+    return (
+      <StyledColumnHeaderWrapper>
+        {_.map(timeHeaderRange, (timeWithDate, index) => {
+          const left = index === 0 ? HEDER_OFFSET : HEDER_OFFSET + (index * CELL_WIDTH)
+          const leftBorderWidth = Math.abs(left / CELL_WIDTH)
+
+          return(
+            <StyledColumnHeader key={timeWithDate.valueOf()} left={left + leftBorderWidth}>
+              {timeWithDate.format('HH:mm')}
+            </StyledColumnHeader>
+          )
+        })}
+      </StyledColumnHeaderWrapper>
+    )   
   }
 
-  const renderRows = () => _.map(dateRange, (date) => {
+  const renderRows = () => _.map(dateRange, ({ date, name, progressList }) => {
+    
+    const renderProgress = (progress) => {
+      const { startTime: progressStartTime, endTime: progressEndTime, usedStartTime, usedEndTime } = progress
+
+      const offsetHours = getHourDiffBetweenTime(startTime, progressStartTime)
+      const progressHourDifference = getHourDiffBetweenTime(progressStartTime, progressEndTime)
+      const usedHourDifference = getHourDiffBetweenTime(usedStartTime, usedEndTime)
+      const usedOffsetHours = getHourDiffBetweenTime(progressStartTime, usedStartTime)
+      
+      const left = (offsetHours * CELL_WIDTH) + ROW_HEADER_WIDTH
+      const width = progressHourDifference * CELL_WIDTH
+      const usedLeft = usedOffsetHours * CELL_WIDTH
+      const usedWidth = usedHourDifference * CELL_WIDTH
+
+      const leftBorderWidth = Math.abs(left / CELL_WIDTH)
+      const progressBorderWidth = Math.abs(width / CELL_WIDTH)
+      const usedBorderWidth = Math.abs(usedWidth / CELL_WIDTH)
+
+      return (
+        <WeeklySchedulerProgress
+          left={left + leftBorderWidth}
+          total={width + progressBorderWidth}
+          usedLeft={usedLeft}
+          used={usedWidth + usedBorderWidth}
+          top={10}
+          text={name}
+        />
+      )
+    }
+
     return (
       <StyledRow key={date.valueOf()}>
         <StyledRowContent>
-          <StyledCell>
+          <StyledCell width={ROW_HEADER_WIDTH}>
             <StyledRowHeader>
               {date.format('dddd').slice(0, 3).toUpperCase()}
               <StyledRowSubHeader>
@@ -62,13 +97,7 @@ const WeeklyScheduler = ({
             </StyledRowHeader>
           </StyledCell>
           {_.map(timeRange, () => <StyledCell />)}
-          <WeeklySchedulerProgress
-            total={301}
-            used={100}
-            left={101}
-            top={10}
-            text='AM Session'
-          />
+          {_.map(progressList,  renderProgress)}
         </StyledRowContent>
       </StyledRow>
     )
