@@ -36,7 +36,6 @@ const WeeklyScheduler = ({
     ...timeRange
   ]
 
-
   const renderColumnHeader = () => {
     return (
       <StyledColumnHeaderWrapper>
@@ -54,33 +53,13 @@ const WeeklyScheduler = ({
     )   
   }
 
-  const renderRows = () => _.map(dateRange, ({ date, name, progressList }) => {
-    
+  const renderRows = () => _.map(dateRange, ({ date, progressList }) => {
     const renderProgress = (progress) => {
-      const { startTime: progressStartTime, endTime: progressEndTime, usedStartTime, usedEndTime } = progress
-
-      const offsetHours = getHourDiffBetweenTime(startTime, progressStartTime)
-      const progressHourDifference = getHourDiffBetweenTime(progressStartTime, progressEndTime)
-      const usedHourDifference = getHourDiffBetweenTime(usedStartTime, usedEndTime)
-      const usedOffsetHours = getHourDiffBetweenTime(progressStartTime, usedStartTime)
-      
-      const left = (offsetHours * CELL_WIDTH) + ROW_HEADER_WIDTH
-      const width = progressHourDifference * CELL_WIDTH
-      const usedLeft = usedOffsetHours * CELL_WIDTH
-      const usedWidth = usedHourDifference * CELL_WIDTH
-
-      const leftBorderWidth = Math.abs(left / CELL_WIDTH)
-      const progressBorderWidth = Math.abs(width / CELL_WIDTH)
-      const usedBorderWidth = Math.abs(usedWidth / CELL_WIDTH)
-
       return (
         <WeeklySchedulerProgress
-          left={left + leftBorderWidth}
-          total={width + progressBorderWidth}
-          usedLeft={usedLeft}
-          used={usedWidth + usedBorderWidth}
-          top={10}
-          text={name}
+          startTime={startTime}
+          endTime={endTime}
+          progress={progress}
         />
       )
     }

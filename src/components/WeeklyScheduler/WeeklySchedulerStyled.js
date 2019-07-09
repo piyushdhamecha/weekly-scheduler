@@ -66,6 +66,7 @@ export const StyledProgressContainer = styled.div`
   height: 40px;
   left: ${({ left = 0 }) => left}px;
   top: ${({ top = 0 }) => top}px;
+  opacity: .9;
 `
 
 export const StyledProgress = styled.div`
@@ -78,6 +79,7 @@ export const StyledProgress = styled.div`
   align-items: center;
   left: ${({ left = 0 }) => left}px;
   width: ${({ width = 50 }) => width}px;
+  opacity: .9;
 `
 
 export const StyledRowContent = styled.div`
@@ -86,11 +88,14 @@ export const StyledRowContent = styled.div`
 `
 
 export const StyledProgressText = styled.div`
-  display: flex;
   width: ${({ width=50 }) => width}px;
   z-index: 3;
-  justify-content: center;
-  align-items: center;
   font-weight: 600;
   color: #fff;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding: 10px;
+  width: 100%;
+  text-align: center;
 `

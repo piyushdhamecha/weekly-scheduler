@@ -12,23 +12,29 @@ for (let index = 0; index < dateDiff; index++) {
 
 export default {
   startTime: 8,
-  endTime: 15,
+  endTime: 16,
   dateRange: _.map(dateRange, (date) => {
     return {
       date,
-      name: "AM Sessions",
       progressList: [
         {
+          name: "AM Sessions",
+          backgroundColor: '#12BBAB',
           startTime: 9,
-          endTime: 12,
-          usedStartTime: 10,
-          usedEndTime: 11
+          endTime: 13,
+          nestedProgressList: [
+            { backgroundColor: '#008B9C', startTime: 9, endTime: 10 },
+            { backgroundColor: 'red', startTime: 10, endTime: 12 },
+            { backgroundColor:'gray', startTime: 12, endTime: 13 }
+          ]
         },
         {
-          startTime: 12,
+          name: "Breakfast sessions",
+          startTime: 14,
           endTime: 15,
-          usedStartTime: 12,
-          usedEndTime: 15
+          nestedProgressList: [
+            { startTime: 14, endTime: 15 }
+          ]
         }
       ]
     }
